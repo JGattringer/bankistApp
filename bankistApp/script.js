@@ -10,7 +10,7 @@
 // DIFFERENT DATA! Contains movement dates, currency and locale
 
 const account1 = {
-  owner: 'Joao Gattringer',
+  owner: 'Joao Gatto',
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
@@ -88,16 +88,11 @@ const formatMoventDate = function (date, locale) {
     Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
 
   const daysPassed = calcDaysPassed(new Date(), date);
-  // console.log(daysPassed);
 
   if (daysPassed === 0) return 'Today';
   if (daysPassed === 1) return 'Yesterday';
   if (daysPassed <= 7) return `${daysPassed} days ago`;
   else {
-    // const day = `${date.getDate()}`.padStart(2, 0);
-    // const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    // const year = date.getFullYear();
-    // return `${day}/${month}/${year}`;
     return Intl.DateTimeFormat(locale).format(date);
   }
 };
@@ -274,13 +269,6 @@ btnLogin.addEventListener('click', function (event) {
     currentAccount.locale,
     options
   ).format(now);
-
-  // const day = `${now.getDate()}`.padStart(2, 0);
-  // const month = `${now.getMonth() + 1}`.padStart(2, 0);
-  // const year = now.getFullYear();
-  // const hour = `${now.getHours()}`.padStart(2, 0);
-  // const min = `${now.getMinutes()}`.padStart(2, 0);
-  // labelDate.textContent = `${day}/${month}/${year}, ${hour}:${min}`;
 
   // limpando campo dados usuario
   inputLoginUsername.value = inputLoginPin.value = '';

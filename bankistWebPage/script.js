@@ -1,20 +1,26 @@
 'use strict';
 const header = document.querySelector('.header');
-
+const allSections = document.querySelectorAll('.section');
+const imgTargets = document.querySelectorAll('img[data-src]');
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-// cria um dom element e armazena ele na variavel
+
+// Cria um elemento DOM e armazena-o em uma variável
 const message = document.createElement('div');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
-// seleciona o elemento section1
+
+// Seleciona o elemento com id "section--1"
 const section1 = document.querySelector('#section--1');
-//tabs
+
+// Tabs
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
+
+// Obtém as coordenadas iniciais do section1
 const initialCoords = section1.getBoundingClientRect();
 ///////////////////////////////////////
 // Modal window
@@ -29,14 +35,15 @@ const closeModal = function () {
   modal.classList.add('hidden');
   overlay.classList.add('hidden');
 };
+
+// Adiciona um evento de clique a cada botão para abrir o modal
 btnsOpenModal.forEach(btn => btn.addEventListener('click', openModal));
 
-// for (let i = 0; i < btnsOpenModal.length; i++)
-//   btnsOpenModal[i].addEventListener('click', openModal);
-
+// Fecha o modal quando o botão "btnCloseModal" é clicado
 btnCloseModal.addEventListener('click', closeModal);
 overlay.addEventListener('click', closeModal);
 
+// Fecha o modal quando a tecla "Esc" é pressionada
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
     closeModal();
@@ -46,33 +53,21 @@ document.addEventListener('keydown', function (e) {
 ////////////////////////////////////////////////////////////////////
 //////////////////////////PAGE NAVIGATION//////////////////////////
 
-// usamos o for each para os 3 botoes mas nao e recomendado caso tenhamos muitos elementos pois estariamos criando muitas copias dessa funcao e iria impactar no desempenho
-// seleciona todos os links da barra menu
-// document.querySelectorAll('.nav__link').forEach(function (el) {
-//   el.addEventListener('click', function (e) {
-//     // evita o default de atualizar a pagina
-//     e.preventDefault();
-//     //pegamos o atributo href como uma id para manipularmos
-//     const id = this.getAttribute('href');
-//     console.log(id);
-//     // realiza o smooth scroll
-//     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-//   });
-// });
+// EVENT DELEGATION
 
-///////////// EVENT DELEGATION
-
-// 1 - add event listener to a common parent element
-// 2 - determine what element originated the event
-// na funcao abaixo usamos o conceito de bubbling para atrelar os eventos dos filhos serem escutados pelo pai e atravez dele reagir ao mesmo
+// 1 - Adicione um ouvinte de eventos a um elemento pai comum
+// 2 - Determine qual elemento originou o evento
+// Na função abaixo, usamos o conceito de "bubbling" para anexar eventos dos filhos ouvirem pelo pai e reagir a eles.
 document.querySelector('.nav__links').addEventListener('click', function (e) {
   e.preventDefault();
   console.log('click');
-  // matching strategy - apenas ira realizar o funcao de scroll caso o click seja feito em um dos elementos que contem nav__link
+
+  // Estratégia de correspondência - realizamos a rolagem suave somente se o clique for feito em um dos elementos que contêm "nav__link"
   if (e.target.classList.contains('nav__link')) {
     const id = e.target.getAttribute('href');
     console.log(id);
-    // realiza o smooth scroll
+
+    // Realiza a rolagem suave
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
   }
 });
@@ -80,61 +75,44 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 /////////////////////////////////////////////////////////////////////
 /////////////////////SCROLLING//////////////////////////////////////
 
-// adiciona uma class ao elemento criado
+// Adiciona uma classe ao elemento criado
 message.classList.add('cookie-message');
 
 message.innerHTML = `we use cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>`;
 
-// faz o append da msg na base da pagina
+// Anexa a mensagem na parte superior da página
 header.append(message);
 
-// adiciona funcao de fechar o botao ao clicar
+// Adiciona uma função para fechar a mensagem ao clicar
 document
   .querySelector('.btn--close-cookie')
   .addEventListener('click', function () {
-    //novo modo
     message.remove();
-    //modo antigo
-    // message.parentElement.removeChild(message);
   });
 
-// muda cor e tamanho da msg
+// Altera a cor e o tamanho da mensagem
 message.style.backgroundColor = '#37383d';
 message.style.width = '120%';
 
-//converte a string em number
+// Converte a string em número
 message.style.height =
   Number.parseFloat(getComputedStyle(message).height, 10) + 30 + 'px';
 
-// scrolling to
+// Rolar para
 
 btnScrollTo.addEventListener('click', function (e) {
-  // pega as coordenadas do section1
+  // Obtém as coordenadas de "section1"
   const s1coords = section1.getBoundingClientRect();
   console.log(s1coords);
 
-  // coodernadas da posicao atual do scroll
+  // Coordenadas da posição atual da rolagem
   console.log(
     'Current scroll (x/y) position',
     window.pageXOffset,
     window.pageYOffset
   );
 
-  // // realiza o scrolling, passamos as cordenadas que queremos que a pagina se mova para onde queremos, esse estilo e o modo antigo de se realizar
-  // window.scrollTo(
-  //   s1coords.left + window.pageXOffset,
-  //   s1coords.top + window.pageYOffset
-  // );
-
-  //SMOOTH SCROLLING
-  // passamos um objeto como argumento e definimos suas propriedades
-  // window.scrollTo({
-  //   left: s1coords.left + window.pageXOffset,
-  //   top: s1coords.top + window.pageYOffset,
-  //   behavior: 'smooth',
-  // });
-
-  //JEITO MODERNO DE REALIZAR O SCROLL TO, funciona apenas em browsers atuais
+  // Maneira moderna de realizar a rolagem (funciona apenas em navegadores atuais)
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -145,20 +123,19 @@ tabsContainer.addEventListener('click', function (e) {
   const clicked = e.target.closest('.operations__tab');
   console.log(clicked);
 
-  // guard cause - proteje de erro caso uma area fora do botao seja clicada
+  // Guard clause - protege contra erros caso uma área fora do botão seja clicada
   if (!clicked) return;
 
-  //remove active classes
+  // Remove as classes ativas
   tabsContent.forEach(tabContent =>
     tabContent.classList.remove('operations__content--active')
   );
   tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
 
-  // active tab
+  // Ativa a aba clicada
   clicked.classList.add('operations__tab--active');
 
-  // activate content area
-
+  // Ativa a área de conteúdo correspondente
   console.log(clicked.dataset.tab);
   document
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
@@ -181,41 +158,19 @@ const handleHover = function (e) {
   }
 };
 
-// passing "argument" into handler
+// Passando "argumento" para o manipulador
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 nav.addEventListener('mouseout', handleHover.bind(1));
 
 ////////////////////////////////////////////////////////////////
 /////////////////////////STICKY NAVIGATION/////////////////////
 
-// old school way nao e muito utilizado pois pode apresentar problemas de performance
-// window.addEventListener('scroll', function () {
-//   if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
-//   else nav.classList.remove('sticky');
-// });
-/////////////////////////////////////////////////////////
-///////////// sticky navigation: Intersection Observer API
-
-// const obsCallBack = function (entries, Observer) {
-//   entries.forEach(entry => {
-//     console.log(entry);
-//   })
-// }
-
-// const obsOptions = {
-//   root: null,
-//   threshold: [0, 0.2],
-// }
-
-// const observer = new IntersectionObserver (obsCallBack, obsOptions)
-// observer.observe(section1)
-
+// Obtém a altura da barra de navegação
 const navHeight = nav.getBoundingClientRect().height;
 console.log(navHeight);
 
 const stickyNav = function (entries) {
   const [entry] = entries;
-  // console.log(entry)
 
   if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
@@ -231,8 +186,6 @@ headerObserver.observe(header);
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////REVEAL SECTIONS////////////////////////////////
-
-const allSections = document.querySelectorAll('.section');
 
 const revealSection = function (entries, observer) {
   const [entry] = entries;
@@ -257,15 +210,13 @@ allSections.forEach(function (section) {
 //////////////////////////////////////////////////////////////////////
 ///////////////////////LAZY LOADING IMAGES///////////////////////////
 
-const imgTargets = document.querySelectorAll('img[data-src]');
-
 const loadImg = function (entries, observer) {
   const [entry] = entries;
   console.log(entry);
 
   if (!entry.isIntersecting) return;
 
-  // replace src with data-src
+  // Substitui "src" por "data-src"
   entry.target.src = entry.target.dataset.src;
 
   entry.target.addEventListener('load', function () {
@@ -286,7 +237,7 @@ imgTargets.forEach(img => imgObserver.observe(img));
 //////////////////////////////////////////////////////////////////////
 ///////////////// SLIDER COMPONENT //////////////////////////////////
 
-// slider
+// Slider
 
 const slider = function () {
   const slides = document.querySelectorAll('.slide');
@@ -295,10 +246,6 @@ const slider = function () {
   const dotContainer = document.querySelector('.dots');
   let currentSlide = 0;
   const maxSlide = slides.length - 1;
-
-  // const slider = document.querySelector('.slider');
-  // slider.style.transform = `scale(0.4) translateX`;
-  // slider.style.overflow = 'visible';
 
   const createDots = function () {
     slides.forEach(function (_, i) {
@@ -325,8 +272,7 @@ const slider = function () {
     );
   };
 
-  // next slide
-
+  // Próximo slide
   const nextSlide = function () {
     if (currentSlide === maxSlide) {
       currentSlide = 0;
@@ -337,6 +283,7 @@ const slider = function () {
     activateDot(currentSlide);
   };
 
+  // Slide anterior
   const prevSlide = function () {
     if (currentSlide === 0) {
       currentSlide = maxSlide;
@@ -354,11 +301,11 @@ const slider = function () {
   };
   init();
 
-  // event handlers
+  // Manipuladores de eventos
   btnRight.addEventListener('click', nextSlide);
   btnLeft.addEventListener('click', prevSlide);
 
-  // adicionando uso da arrow key
+  // Adicionando uso das teclas de seta
   document.addEventListener('keydown', function (e) {
     console.log(e);
     if (e.key === 'ArrowLeft') prevSlide();
