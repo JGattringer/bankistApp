@@ -2,7 +2,7 @@
 
 Esta é uma página da web que demonstra uma variedade de recursos e funcionalidades avançadas implementadas com JavaScript, HTML e CSS.
 
-![Bankist App Screenshot](./img/bankistWebPage.png)
+![Bankist Web Page Screenshot](./img/bankistWebPage.png)
 
 ## Recursos Destacados
 

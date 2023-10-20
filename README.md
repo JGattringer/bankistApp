@@ -4,6 +4,8 @@ Este repositório contém dois projetos incríveis, cada um destacando diferente
 
 ## Projeto 1: [bankistWebPage]
 
+![Bankist Web Page Screenshot](./bankistWebPage/img/bankistWebPage.png)
+
 ![Projeto 1]
 
 O primeiro projeto é uma demonstração de recursos e funcionalidades avançadas em desenvolvimento web. Ele utiliza JavaScript, HTML e CSS para criar uma experiência interativa. Alguns dos principais recursos incluem:
@@ -19,6 +21,8 @@ O primeiro projeto é uma demonstração de recursos e funcionalidades avançada
 - **Lazy Loading de Imagens**: Carrega imagens somente quando visíveis.
 
 ## Projeto 2: [bankistApp]
+
+![Bankist App Screenshot](./bankistApp/src/bankistApp.png)
 
 ![Projeto 2]
 
